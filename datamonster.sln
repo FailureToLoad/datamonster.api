@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "datamonster", "src\datamonster.csproj", "{A762F00D-71AA-4E6C-9B7E-D8890AC23F92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "datamonster.test", "test\datamonster.test.csproj", "{16650282-29FD-4989-9A34-293F3EF7B8E3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A762F00D-71AA-4E6C-9B7E-D8890AC23F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A762F00D-71AA-4E6C-9B7E-D8890AC23F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A762F00D-71AA-4E6C-9B7E-D8890AC23F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A762F00D-71AA-4E6C-9B7E-D8890AC23F92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16650282-29FD-4989-9A34-293F3EF7B8E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16650282-29FD-4989-9A34-293F3EF7B8E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16650282-29FD-4989-9A34-293F3EF7B8E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16650282-29FD-4989-9A34-293F3EF7B8E3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

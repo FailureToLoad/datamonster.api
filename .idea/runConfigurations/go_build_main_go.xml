@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+    <module name="api" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="CONN_STRING" value="postgres://app:Password1@172.18.0.3:5432/records" />
+    </envs>
+    <kind value="FILE" />
+    <package value="datamonster" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/cmd/apiserver/main.go" />
+    <method v="2" />
+  </configuration>
+</component>

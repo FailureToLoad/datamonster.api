@@ -19,7 +19,7 @@ var (
 func init() {
 	appContext = context.Background()
 	connPool = postgres.InitConnPool(appContext)
-	app = server.NewServer()
+	app = server.NewServer(appContext)
 }
 
 func main() {

@@ -1,10 +1,11 @@
 package settlement
 
 import (
+	"net/http"
+
 	postgres "github.com/failuretoload/datamonster/settlement/internal"
 	"github.com/failuretoload/datamonster/store"
 	"github.com/failuretoload/datamonster/web"
-	"net/http"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -27,15 +28,11 @@ type SettlementDTO struct {
 	Year                int    `json:"year"`
 }
 
-func withPermission(routeHandler http.HandlerFunc) http.HandlerFunc {
-	return web.ValidatePermissions([]string{"manage:settlements"}, routeHandler)
-}
-
 func (c Controller) RegisterRoutes(r chi.Router) {
-	r.Get("/settlement", withPermission(c.getSettlements))
-	r.Post("/settlement", withPermission(c.createSettlement))
-	r.Route("/settlement/{id}", func(r chi.Router) {
-		r.Get("/", withPermission(c.getSettlement))
+	r.Get("/settlements", c.getSettlements)
+	r.Post("/settlements", c.createSettlement)
+	r.Route("/settlements/{id}", func(r chi.Router) {
+		r.Get("/", c.getSettlement)
 	})
 }
 

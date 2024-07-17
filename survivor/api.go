@@ -26,8 +26,8 @@ func NewController(conn store.Connection) *Controller {
 
 func (c Controller) RegisterRoutes(r chi.Router) {
 	r.Use(settlementIdExtractor)
-	r.Get("/settlement/{id}/survivor", withPermission(c.getSurvivors))
-	r.Post("/settlement/{id}/survivor", withPermission(c.createSurvivor))
+	r.Get("/settlement/{id}/survivor", c.getSurvivors)
+	r.Post("/settlement/{id}/survivor", c.createSurvivor)
 }
 
 func (c Controller) getSurvivors(w http.ResponseWriter, r *http.Request) {
@@ -71,10 +71,6 @@ func (c Controller) createSurvivor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	web.MakeJsonResponse(w, http.StatusNoContent, nil)
-}
-
-func withPermission(routeHandler http.HandlerFunc) http.HandlerFunc {
-	return web.ValidatePermissions([]string{"manage:survivors"}, routeHandler)
 }
 
 type SurvivorDTO struct {

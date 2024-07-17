@@ -6,10 +6,6 @@ import (
 	"net/http"
 )
 
-const (
-	internalServerErrorMessage = "Internal Server Error"
-)
-
 type ErrorMessage struct {
 	Message string `json:"message"`
 }
@@ -29,13 +25,20 @@ func WriteJSON(rw http.ResponseWriter, status int, data interface{}) error {
 	return nil
 }
 
-func InternalServerError(rw http.ResponseWriter, err error) {
-	errorMessage := ErrorMessage{Message: internalServerErrorMessage}
-	writeError := WriteJSON(rw, http.StatusInternalServerError, errorMessage)
+func InternalServerError(rw http.ResponseWriter, errMessage string) {
+	writeError := WriteJSON(rw, http.StatusInternalServerError, errMessage)
 	if writeError != nil {
 		log.Println("Error writing error message: ", writeError.Error())
 	}
-	log.Print("Internal error server: ", err.Error())
+	log.Print("Internal error server: ", errMessage)
+}
+
+func Unauthorized(rw http.ResponseWriter, message string) {
+	writeError := WriteJSON(rw, http.StatusUnauthorized, message)
+	if writeError != nil {
+		log.Println("Error writing error message: ", writeError.Error())
+	}
+	log.Println("Unauthorized: ", message)
 }
 
 func MakeJsonResponse(w http.ResponseWriter, status int, data interface{}) {

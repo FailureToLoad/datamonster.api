@@ -3,13 +3,20 @@ module github.com/failuretoload/datamonster
 go 1.21.1
 
 require (
-	github.com/auth0/go-jwt-middleware/v2 v2.2.1
+	github.com/MicahParks/keyfunc/v3 v3.3.3
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-chi/cors v1.2.1
+	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/unrolled/secure v1.15.0
+	github.com/workos/workos-go/v4 v4.14.0
 )
 
-require gopkg.in/go-jose/go-jose.v2 v2.6.2 // indirect
+require (
+	github.com/MicahParks/jwkset v0.5.18 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
+	golang.org/x/time v0.5.0 // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

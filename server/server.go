@@ -1,13 +1,16 @@
 package server
 
 import (
-	"github.com/failuretoload/datamonster/helpers"
-	"github.com/go-chi/cors"
+	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 
-	jwtmiddleware "github.com/auth0/go-jwt-middleware/v2"
+	"github.com/MicahParks/keyfunc/v3"
+	"github.com/failuretoload/datamonster/helpers"
+	"github.com/go-chi/cors"
+
 	"github.com/unrolled/secure"
 
 	"github.com/go-chi/chi/v5"
@@ -15,14 +18,11 @@ import (
 )
 
 type Server struct {
-	Mux        *chi.Mux
-	middleware *jwtmiddleware.JWTMiddleware
+	Mux *chi.Mux
+	kf  keyfunc.Keyfunc
 }
 
-func NewServer() Server {
-	audience := helpers.SafeGetEnv("AUTH0_AUDIENCE")
-	domain := helpers.SafeGetEnv("AUTH0_DOMAIN")
-
+func NewServer(ctx context.Context) Server {
 	router := chi.NewRouter()
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
@@ -34,19 +34,20 @@ func NewServer() Server {
 	secureMiddleware := secure.New(SecureOptions())
 	router.Use(secureMiddleware.Handler)
 	router.Use(HandleCacheControl)
-	jwtAuthenticator, err := MakeJwtMiddleware(audience, domain)
+
+	keyfunc, err := GetKeyFunc(ctx)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("unable to create keyfunc %w", err))
 	}
 	return Server{
-		Mux:        router,
-		middleware: jwtAuthenticator,
+		Mux: router,
+		kf:  keyfunc,
 	}
 }
 
 func (s Server) Run() {
 	log.Default().Println("Starting server on port 8080")
-	err := http.ListenAndServe(":8080", finalHandler(ValidateJWT(s.middleware, s.Mux)))
+	err := http.ListenAndServe(":8080", finalHandler(ValidateJWTNew(s.kf, s.Mux)))
 	if err != nil {
 		log.Default().Fatal(err)
 	}

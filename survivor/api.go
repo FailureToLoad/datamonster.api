@@ -26,8 +26,8 @@ func NewController(conn store.Connection) *Controller {
 
 func (c Controller) RegisterRoutes(r chi.Router) {
 	r.Use(settlementIdExtractor)
-	r.Get("/settlement/{id}/survivor", c.getSurvivors)
-	r.Post("/settlement/{id}/survivor", c.createSurvivor)
+	r.Get("/settlements/{id}/survivors", c.getSurvivors)
+	r.Post("/settlements/{id}/survivors", c.createSurvivor)
 }
 
 func (c Controller) getSurvivors(w http.ResponseWriter, r *http.Request) {

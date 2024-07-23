@@ -5,7 +5,7 @@ An API written in Go 1.21.1 for managing Kingdom Death: Monster campaigns.
 ## Related projects
 
  [datamonster.web](https://github.com/FailureToLoad/datamonster.web) - A NextJS site which utilizes this API  
- [datamonster.records](https://github.com/FailureToLoad/datamonster.records) - A containerized postgres database that handles storage.
+ [datamonster.records](https://github.com/FailureToLoad/datamonster.records) - A containerized postgres database that initializes all the required tables
 
 ## Setup
 

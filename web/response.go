@@ -10,7 +10,7 @@ type ErrorMessage struct {
 	Message string `json:"message"`
 }
 
-func WriteJSON(rw http.ResponseWriter, status int, data interface{}) error {
+func WriteJSON(rw http.ResponseWriter, status int, data any) error {
 	js, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -33,8 +33,19 @@ func InternalServerError(rw http.ResponseWriter, errMessage string) {
 	log.Print("Internal error server: ", errMessage)
 }
 
-func Unauthorized(rw http.ResponseWriter, message string) {
-	writeError := WriteJSON(rw, http.StatusUnauthorized, message)
+type unauthorized struct {
+	Access string  `json:"access"`
+	Reason *string `json:"message,omitempty"`
+}
+
+func Unauthorized(rw http.ResponseWriter, message *string) {
+	content := unauthorized{
+		Access: "unauthorized",
+	}
+	if message != nil {
+		content.Reason = message
+	}
+	writeError := WriteJSON(rw, http.StatusUnauthorized, content)
 	if writeError != nil {
 		log.Println("Error writing error message: ", writeError.Error())
 	}

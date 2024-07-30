@@ -53,7 +53,7 @@ type CreateSettlementRequest struct {
 
 func (c Controller) createSettlement(w http.ResponseWriter, r *http.Request) {
 	userID, ok := r.Context().Value(web.UserIdKey).(string)
-	if !ok || userID == "" {
+	if !ok {
 		web.MakeJsonResponse(w, http.StatusBadRequest, "no user id provided")
 		return
 	}
@@ -87,8 +87,13 @@ func (c Controller) createSettlement(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c Controller) getSettlement(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(web.UserIdKey).(string)
+	if !ok {
+		web.MakeJsonResponse(w, http.StatusBadRequest, "no user id provided")
+		return
+	}
 	settlementId := chi.URLParam(r, "id")
-	settlement, repoErr := c.repo.Get(r.Context(), settlementId)
+	settlement, repoErr := c.repo.Get(r.Context(), settlementId, userID)
 	if repoErr != nil {
 		web.MakeJsonResponse(w, http.StatusInternalServerError, "Error retrieving settlement")
 		return

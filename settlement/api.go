@@ -37,8 +37,8 @@ func (c Controller) RegisterRoutes(r chi.Router) {
 }
 
 func (c Controller) getSettlements(w http.ResponseWriter, r *http.Request) {
-	userID := r.Context().Value(web.UserIdKey).(string)
-	settlements, repoErr := c.repo.Select(r.Context(), userID)
+	userId := r.Context().Value(web.UserIdKey).(string)
+	settlements, repoErr := c.repo.Select(r.Context(), userId)
 	if repoErr != nil {
 		web.MakeJsonResponse(w, http.StatusInternalServerError, "Error retrieving settlements")
 		return
@@ -52,7 +52,7 @@ type CreateSettlementRequest struct {
 }
 
 func (c Controller) createSettlement(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value(web.UserIdKey).(string)
+	userId, ok := r.Context().Value(web.UserIdKey).(string)
 	if !ok {
 		web.MakeJsonResponse(w, http.StatusBadRequest, "no user id provided")
 		return
@@ -68,7 +68,7 @@ func (c Controller) createSettlement(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	settlement := postgres.Settlement{
-		Owner:               userID,
+		Owner:               userId,
 		Name:                body.Name,
 		SurvivalLimit:       1,
 		DepartingSurvival:   0,
@@ -87,13 +87,13 @@ func (c Controller) createSettlement(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c Controller) getSettlement(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value(web.UserIdKey).(string)
+	userId, ok := r.Context().Value(web.UserIdKey).(string)
 	if !ok {
 		web.MakeJsonResponse(w, http.StatusBadRequest, "no user id provided")
 		return
 	}
 	settlementId := chi.URLParam(r, "id")
-	settlement, repoErr := c.repo.Get(r.Context(), settlementId, userID)
+	settlement, repoErr := c.repo.Get(r.Context(), settlementId, userId)
 	if repoErr != nil {
 		web.MakeJsonResponse(w, http.StatusInternalServerError, "Error retrieving settlement")
 		return

@@ -24,8 +24,8 @@ func New(d store.Connection) *PostgresRepo {
 	return &PostgresRepo{pool: d}
 }
 
-func (r PostgresRepo) Select(ctx context.Context, userID string) ([]Settlement, error) {
-	query := fmt.Sprintf("SELECT * FROM campaign.settlement WHERE owner='%s'", userID)
+func (r PostgresRepo) Select(ctx context.Context, userId string) ([]Settlement, error) {
+	query := fmt.Sprintf("SELECT * FROM campaign.settlement WHERE owner='%s'", userId)
 	rows, err := r.pool.Query(ctx, query)
 	if err != nil {
 		return []Settlement{}, err

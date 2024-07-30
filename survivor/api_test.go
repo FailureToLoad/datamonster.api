@@ -87,7 +87,7 @@ func (suite *SurvivorApiTestSuite) Test_GetSurvivors_ReturnsSurvivorList() {
 	suite.Equal(200, resp.StatusCode, "200 response should be returned")
 	body, _ := io.ReadAll(resp.Body)
 	dtoList := []SurvivorDTO{}
-	json.Unmarshal(body, &dtoList)
+	_ = json.Unmarshal(body, &dtoList)
 	count := len(dtoList)
 	suite.Equal(2, count, "2 settlements should be returned")
 }

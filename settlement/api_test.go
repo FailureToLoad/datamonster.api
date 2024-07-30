@@ -36,7 +36,7 @@ func (suite *SettlementApiTestSuite) SetupTest() {
 
 }
 
-func (suite *SettlementApiTestSuite) Test_GetSettlements_ReturnsSettmentsList() {
+func (suite *SettlementApiTestSuite) Test_GetSettlements_ReturnsSettlementsList() {
 	rows := storeMocks.MockRows{
 		Rows: []pgx.Row{
 			&SettlementRow{
@@ -60,7 +60,7 @@ func (suite *SettlementApiTestSuite) Test_GetSettlements_ReturnsSettmentsList() 
 		},
 	}
 	suite.db.SetRows(&rows)
-	req := httptest.NewRequest("GET", "/settlement", nil)
+	req := httptest.NewRequest("GET", "/settlements", nil)
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, web.UserIdKey, testUserId)
 	w := httptest.NewRecorder()
@@ -70,7 +70,7 @@ func (suite *SettlementApiTestSuite) Test_GetSettlements_ReturnsSettmentsList() 
 	suite.Equal(200, resp.StatusCode, "200 response should be returned")
 	body, _ := io.ReadAll(resp.Body)
 	dto := []SettlementDTO{}
-	json.Unmarshal(body, &dto)
+	_ = json.Unmarshal(body, &dto)
 	suite.Equal(2, len(dto), "2 settlements should be returned")
 }
 
@@ -92,7 +92,7 @@ func (suite *SettlementApiTestSuite) Test_GetSettlements_ReportsScanErrors() {
 		},
 	}
 	suite.db.SetRows(&errorRows)
-	req := httptest.NewRequest("GET", "/settlement", nil)
+	req := httptest.NewRequest("GET", "/settlements", nil)
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, web.UserIdKey, testUserId)
 	req = req.WithContext(ctx)
@@ -107,7 +107,7 @@ func (suite *SettlementApiTestSuite) Test_GetSettlements_ReportsScanErrors() {
 func (suite *SettlementApiTestSuite) Test_GetSettlements_ReportsConnectionErrors() {
 	err := fmt.Errorf("query error")
 	suite.db.SetError(err)
-	req := httptest.NewRequest("GET", "/settlement", nil)
+	req := httptest.NewRequest("GET", "/settlements", nil)
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, web.UserIdKey, testUserId)
 	req = req.WithContext(ctx)
@@ -128,7 +128,7 @@ func (suite *SettlementApiTestSuite) Test_CreateSettlement_ReturnsASettlement() 
 		Name: "Fun Forever",
 	}
 	reqBody, _ := json.Marshal(settlementRequest)
-	req := httptest.NewRequest("POST", "/settlement", bytes.NewReader(reqBody))
+	req := httptest.NewRequest("POST", "/settlements", bytes.NewReader(reqBody))
 
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, web.UserIdKey, testUserId)
@@ -141,7 +141,7 @@ func (suite *SettlementApiTestSuite) Test_CreateSettlement_ReturnsASettlement() 
 	suite.Equal(200, resp.StatusCode, "return 200 on success")
 	respBody, _ := io.ReadAll(resp.Body)
 	dto := SettlementDTO{}
-	json.Unmarshal(respBody, &dto)
+	_ = json.Unmarshal(respBody, &dto)
 	suite.Equal(1, dto.Id, "created settlement should have an id")
 	suite.Equal("Fun Forever", dto.Name, "created settlement should have supplied name")
 }
@@ -155,7 +155,7 @@ func (suite *SettlementApiTestSuite) Test_CreateSettlement_EnforceRequestType() 
 		FancyName: "Fun Forever",
 	}
 	reqBody, _ := json.Marshal(wrongRequest)
-	req := httptest.NewRequest("POST", "/settlement", bytes.NewReader(reqBody))
+	req := httptest.NewRequest("POST", "/settlements", bytes.NewReader(reqBody))
 
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, web.UserIdKey, testUserId)
@@ -173,7 +173,7 @@ func (suite *SettlementApiTestSuite) Test_CreateSettlement_RequiresAName() {
 		Name: "",
 	}
 	reqBody, _ := json.Marshal(emptyRequest)
-	req := httptest.NewRequest("POST", "/settlement", bytes.NewReader(reqBody))
+	req := httptest.NewRequest("POST", "/settlements", bytes.NewReader(reqBody))
 
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, web.UserIdKey, testUserId)
@@ -195,7 +195,7 @@ func (suite *SettlementApiTestSuite) Test_CreateSettlement_ReportsCreationErrors
 		Name: "Fun time",
 	}
 	reqBody, _ := json.Marshal(createRequest)
-	req := httptest.NewRequest("POST", "/settlement", bytes.NewReader(reqBody))
+	req := httptest.NewRequest("POST", "/settlements", bytes.NewReader(reqBody))
 
 	ctx := req.Context()
 	ctx = context.WithValue(ctx, web.UserIdKey, testUserId)
@@ -219,7 +219,7 @@ func (suite *SettlementApiTestSuite) Test_GetSettlement_ReturnsOneSettlement() {
 		CurrentYear:         1,
 	}
 	suite.db.SetRow(&row)
-	req := httptest.NewRequest("GET", "/settlement/1", nil)
+	req := httptest.NewRequest("GET", "/settlements/1", nil)
 	ctx := req.Context()
 	rctx := chi.NewRouteContext()
 	rctx.URLParams.Add("id", "1")
@@ -234,7 +234,7 @@ func (suite *SettlementApiTestSuite) Test_GetSettlement_ReturnsOneSettlement() {
 	suite.Equal(200, resp.StatusCode, "return OK on success")
 	body, _ := io.ReadAll(resp.Body)
 	dto := SettlementDTO{}
-	json.Unmarshal(body, &dto)
+	_ = json.Unmarshal(body, &dto)
 	suite.Equal(1, dto.Id, "returned settlement should have supplied id")
 }
 
@@ -243,7 +243,7 @@ func (suite *SettlementApiTestSuite) Test_GetSettlement_ReportsScanErrors() {
 		Error: fmt.Errorf("scan error"),
 	}
 	suite.db.SetRow(&row)
-	req := httptest.NewRequest("GET", "/settlement/1", nil)
+	req := httptest.NewRequest("GET", "/settlements/1", nil)
 	ctx := req.Context()
 	rctx := chi.NewRouteContext()
 	rctx.URLParams.Add("id", "1")

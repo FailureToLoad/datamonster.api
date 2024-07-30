@@ -77,7 +77,7 @@ func (suite *SurvivorApiTestSuite) Test_GetSurvivors_ReturnsSurvivorList() {
 		},
 	}
 	suite.db.SetRows(&rows)
-	req := httptest.NewRequest("GET", "/settlement/1/survivor", nil)
+	req := httptest.NewRequest("GET", "/settlements/1/survivors", nil)
 	ctx := req.Context()
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
@@ -117,7 +117,7 @@ func (suite *SurvivorApiTestSuite) Test_CreateSurvivor_ReturnsNoContent() {
 	if err != nil {
 		panic("Failed to marshal JSON")
 	}
-	req := httptest.NewRequest("POST", "/settlement/1/survivor", bytes.NewBuffer(reqBody))
+	req := httptest.NewRequest("POST", "/settlements/1/survivors", bytes.NewBuffer(reqBody))
 	ctx := req.Context()
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
@@ -152,7 +152,7 @@ func (suite *SurvivorApiTestSuite) Test_CreateSurvivor_RequiresAValidSettlementI
 	if err != nil {
 		panic("Failed to marshal JSON")
 	}
-	req := httptest.NewRequest("POST", "/settlement/z/survivor", bytes.NewBuffer(reqBody))
+	req := httptest.NewRequest("POST", "/settlements/z/survivors", bytes.NewBuffer(reqBody))
 	ctx := req.Context()
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
@@ -188,7 +188,7 @@ func (suite *SurvivorApiTestSuite) Test_CreateSurvivor_RequiresAUniqueName() {
 	if err != nil {
 		panic("Failed to marshal JSON")
 	}
-	req := httptest.NewRequest("POST", "/settlement/1/survivor", bytes.NewBuffer(reqBody))
+	req := httptest.NewRequest("POST", "/settlements/1/survivors", bytes.NewBuffer(reqBody))
 	ctx := req.Context()
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
@@ -212,7 +212,7 @@ func (suite *SurvivorApiTestSuite) Test_CreateSurvivor_RequiresAValidBody() {
 	if err != nil {
 		panic("Failed to marshal JSON")
 	}
-	req := httptest.NewRequest("POST", "/settlement/1/survivor", bytes.NewBuffer(reqBody))
+	req := httptest.NewRequest("POST", "/settlements/1/survivors", bytes.NewBuffer(reqBody))
 	ctx := req.Context()
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
@@ -248,7 +248,7 @@ func (suite *SurvivorApiTestSuite) Test_CreateSurvivor_CommunicatesDbIssues() {
 	if err != nil {
 		panic("Failed to marshal JSON")
 	}
-	req := httptest.NewRequest("POST", "/settlement/1/survivor", bytes.NewBuffer(reqBody))
+	req := httptest.NewRequest("POST", "/settlements/1/survivors", bytes.NewBuffer(reqBody))
 	ctx := req.Context()
 	req = req.WithContext(ctx)
 	w := httptest.NewRecorder()
